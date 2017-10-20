@@ -1,0 +1,49 @@
+<div class="demoTable">
+    登录名或姓名：
+    <div class="layui-inline">
+        <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+    </div>
+    <button class="layui-btn" data-type="reload">搜索</button>
+</div>
+<table class="layui-table" lay-filter="member" id="member-list">
+    <tbody>
+    </tbody>
+</table>
+<script>
+    layui.use('table', function () {
+        var table = layui.table;
+        var tableIns = table.render({
+            elem: '#member-list',
+            page: true,
+            limit: 15,
+            skin: 'line',
+            even: true,
+            height: 'full-335',
+            url: '/admin/member/detail_view?id='+"{$id}",
+            id: 'member',
+            request: {},
+            cols: [
+                [
+                    {checkbox: true},
+                    {field: 'id', title: 'ID', width: 60, sort: true},
+                    {field: 'username', title: '登录名', width: 120},
+                    {field: 'real_name', title: '真实姓名', width: 100},
+                    {field: 'idc', title: '身份证号', width: 180, edit: 'text'},
+                    {field: 'add_time', title: '注册时间', width: 140, edit: 'text'},
+                    {field: 'login_ip', title: '最后登陆IP', width: 100, edit: 'text'},
+                    {field: 'blocked', title: '是否冻结', width: 100, edit: 'text', toolbar: '#blocked'},
+                    {field: 'static_purse', title: '静态钱包', width: 100, edit: 'text'},
+                    {field: 'dynamics', title: '动态钱包', width: 100, edit: 'text'},
+                    {field: 'thekey', title: '排单币', width: 100, edit: 'text'},
+                    {field: 'Alipay', title: '支付宝', width: 120, edit: 'text'},
+                    {field: 'bank', title: '开户行', width: 120, edit: 'text'},
+                    {field: 'bank_idc', title: '银行账号', width: 150, edit: 'text'},
+                    {field: 'bank_ress', title: '开户支行', width: 120, edit: 'text'},
+                    {fixed: 'right', title: '操作', width: 200, align: 'center', toolbar: '#barDemo'}
+                ]
+            ]
+        });
+    })
+
+
+</script>

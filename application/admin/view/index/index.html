@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>后台管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="__CSS__/global.css" media="all">
+    <script src="__JS__/jquery.min.js"></script>
+    <script src="__JS__/jquery.form.min.js"></script>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header header header-demo">
+        <div class="layui-main">
+            <div class="logo" href="#">
+                <a class="logo-icon normal" href="/admin"></a>
+
+            </div>
+
+            <ul class="layui-nav" pc>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">个人信息</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" onclick="">修改密码</a></dd>
+                        <dd><a href="index/logout">退出系统</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree site-demo-nav" lay-filter="test" id="main-menu">
+                <li class="layui-nav-item layui-this"><a href="/admin/index/info">后台首页</a></li>
+                <li class="layui-nav-item "><a href="/admin/user">管理员列表</a></li>
+                <li class="layui-nav-item"><a href="/admin/config">功能设置</a> </li>
+                <li class="layui-nav-item"><a href="/admin/member">会员列表</a> </li>
+            </ul>
+        </div>
+    </div>
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief" id="main-content">
+
+    </div>
+    <script src="__PUBLIC__/layui/layui.js" charset="utf-8"></script>
+
+</div>
+</body>
+</html>
+<script>
+    layui.config({
+        base: '__JS__/'
+        , version: '1.0.0'
+    }).use('global');
+    window.global = {
+        preview: function () {
+            var preview = document.getElementById('LAY_preview');
+            return preview ? preview.innerHTML : '';
+        }()
+    };
+    $(function () {
+        var layer = layui.layer
+                , form = layui.form;
+
+//        layer.msg('Hello World');
+    });
+    function loadData(url, t, f) {
+        var target = arguments[1] !== undefined ? arguments[1] : '#main-content';
+        var func = arguments[2] !== undefined ? arguments[2] : null;
+        $(target).load(url, function (response, status, xhr) {
+            if (status === 'success') {
+                if (func) {
+                    func();
+                }
+            }
+        });
+    }
+    var is_submit = false;
+    function showMessage(msg, type, f) {
+        var mt = arguments[1] !== undefined ? arguments[1] : 1;
+        var func = arguments[2] !== undefined ? arguments[2] : undefined;
+        layer.msg(msg, {icon: mt, time: 2000});
+        if (func && typeof(func) === "function") {
+            func();
+        }
+        return false;
+    }
+    function submitForm(type, form, id) {
+        if (is_submit) return false;
+        is_submit = true;
+        var action = arguments[1] !== undefined ? arguments[1] : '';
+        var target = arguments[2] !== undefined ? arguments[2] : '#main-content';
+        $('.ajax-form' + action).ajaxSubmit({
+            type: 'POST',
+            dataType: type,
+            success: function (data) {
+                is_submit = false;
+                if (type === 'script' && data.indexOf('loadData') !== -1 && data.indexOf('showMessage') === -1) {
+                    layer.msg("提交数据成功", {icon: 1, time: 2000});
+                } else if (type === 'html') {
+                    $(target).html(data);
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                is_submit = false;
+                var msg = xhr.responseText ? xhr.responseText : xhr.error;
+                layer.msg(msg, {icon: 5});
+            }
+        });
+        return false;
+    }
+    function delSingle(url, id) {
+        layer.confirm('您确定要删除数据吗？', {
+            title: '提示',
+            icon: 3,
+            btn: ['确定', '取消'] //按钮
+        }, function (index) {
+            layer.close(index);
+            //这里返回的类型有：json,html,xml,text
+            $.post(url, {'id': id}, function (response) {
+                eval(response);
+            }, "text");
+        });
+    }
+    $(function () {
+
+        loadData('/admin/index/info');
+        $('#main-menu a').click(function (e) {
+            e.preventDefault();
+            var href = $(this).attr('href');
+            if (href !== 'javascript:;') {
+                loadData($(this).attr('href'));
+                $('body').removeClass('site-mobile');
+            }
+        });
+
+    });
+
+
+</script>

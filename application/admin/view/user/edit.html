@@ -1,0 +1,54 @@
+<ul class="layui-tab-title site-demo-title">
+    <li class="layui-this">编辑用户</li>
+</ul>
+<div class="layui-body layui-tab-content site-demo site-demo-body">
+    <div class="layui-main">
+        <form class="layui-form layui-form-pane ajax-form edit-user" action="/admin/user/update">
+            <input type="hidden" name="id" value="{$data.id}">
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="username" autocomplete="off" readonly value="{$data.username}"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">姓&emsp;名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="real_name" autocomplete="off" value="{$data.real_name}"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">密&emsp;码</label>
+                <div class="layui-input-block">
+                    <input type="password" name="password" autocomplete="off" placeholder="******" class="layui-input">
+                </div>
+            </div>
+            {if condition="$data.level eq '超级管理员'"}
+            <div class="layui-form-item" pane="">
+                <label class="layui-form-label">权&emsp;限</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="level" value="0" title="超级管理员" {$data.level=='超级管理员'?'checked':''}>
+                    <input type="radio" name="level" value="1" title="普通管理员" {$data.level=='普通管理员'?'checked':''}>
+                </div>
+            </div>
+            {/if}
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="button" class="layui-btn" onclick="return submitForm('script','.edit-user')">立即提交</button>
+                    <button type="button" class="layui-btn layui-btn-primary" onclick="loadData('/admin/user')">返回</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(function () {
+        layui.use('form', function () {
+            var form = layui.form;
+            form.render();
+        });
+    });
+
+</script>

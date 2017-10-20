@@ -1,0 +1,208 @@
+<ul class="layui-tab-title site-demo-title">
+    <li class="layui-this">会员列表</li>
+    <li>添加会员</li>
+</ul>
+<div class="layui-body layui-tab-content site-demo site-demo-body">
+    <div class="layui-tab-item layui-show">
+        <div class="layui-main" id="data-list">
+            <div class="demoTable">
+                登录名或姓名：
+                <div class="layui-inline">
+                    <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+                </div>
+                <button class="layui-btn" data-type="reload">搜索</button>
+            </div>
+            <table class="layui-table" lay-filter="member" id="member-list">
+                <tbody>
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+    <div class="layui-tab-item">
+        <div class="layui-main">
+            <form class="layui-form layui-form-pane ajax-form add-member" action="/admin/member/add">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">登录名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="username" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">姓&emsp;名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="real_name" required autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">推荐人</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="pid" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">可不填</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">密&emsp;码</label>
+                    <div class="layui-input-inline">
+                        <input type="password" name="password" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">二级密码</label>
+                    <div class="layui-input-inline">
+                        <input type="password" name="safety_pwd" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">支付宝</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="Alipay" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">开户行</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="bank" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">银行账号</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="bank_idc" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">开户行地址</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="bank_ress" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">静态钱包</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="static_purse" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">动态钱包</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="dynamics" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">排单币</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="thekey" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+                        <button class="layui-btn" onclick="return submitForm('script','.add-member')">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+
+</div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-mini" lay-event="detail">查看团队</a>
+    {{#  if(d.blocked === '否'){ }}
+    <a class="layui-btn layui-btn-mini" lay-event="blocked">冻结</a>
+    {{#  } else { }}
+    <a class="layui-btn layui-btn-mini" lay-event="blocked">解封</a>
+    {{#  } }}
+    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+
+    <!-- 这里同样支持 laytpl 语法，如： -->
+
+</script>
+<script type="text/html" id="blocked">
+    {{#  if(d.blocked === '否'){ }}
+    <span style="color: #008800">{{d.blocked}}</span>
+    {{#  } else { }}
+    <span style="color: red">{{d.blocked}}</span>
+    {{#  } }}
+
+</script>
+<script>
+    layui.use('table', function () {
+        var table = layui.table;
+        var tableIns = table.render({
+            elem: '#member-list',
+            page: true,
+            limit: 15,
+            skin: 'line',
+            even: true,
+            height: 'full-335',
+            url: '/admin/member/view',
+            id: 'member',
+            request: {},
+            cols: [
+                [
+                    {checkbox: true},
+                    {field: 'id', title: 'ID', width: 60, sort: true},
+                    {field: 'username', title: '登录名', width: 120},
+                    {field: 'real_name', title: '真实姓名', width: 100},
+                    {field: 'idc', title: '身份证号', width: 180, edit: 'text'},
+                    {field: 'add_time', title: '注册时间', width: 140, edit: 'text'},
+                    {field: 'login_ip', title: '最后登陆IP', width: 100, edit: 'text'},
+                    {field: 'blocked', title: '是否冻结', width: 100, edit: 'text', toolbar: '#blocked'},
+                    {field: 'static_purse', title: '静态钱包', width: 100, edit: 'text'},
+                    {field: 'dynamics', title: '动态钱包', width: 100, edit: 'text'},
+                    {field: 'thekey', title: '排单币', width: 100, edit: 'text'},
+                    {field: 'Alipay', title: '支付宝', width: 120, edit: 'text'},
+                    {field: 'bank', title: '开户行', width: 120, edit: 'text'},
+                    {field: 'bank_idc', title: '银行账号', width: 150, edit: 'text'},
+                    {field: 'bank_ress', title: '开户支行', width: 120, edit: 'text'},
+                    {fixed: 'right', title: '操作', width: 200, align: 'center', toolbar: '#barDemo'}
+                ]
+            ]
+        });
+        $('.demoTable .layui-btn').click(function () {
+            if ($('#demoReload').val().length > 0) {
+                tableIns.reload({
+                    where: {
+                        filter: $('#demoReload').val()
+                    }
+                })
+            }
+        });
+
+        table.on('tool(member)', function (obj) {
+
+            var type = obj.event, id = obj.data.id;
+            if (type == 'blocked') {
+                $.post('/admin/member/blocked', {'id': id}, function (response) {
+                    if (response == 'error')
+                        layer.msg('修改失败');
+                    else {
+                        var str;
+                        var u = obj.tr.eq(1).find('a').eq(1);
+                        if (response == '是') {
+                            str = '解封';
+                        } else {
+                            str = '冻结';
+                        }
+                        u.text(str);
+                        obj.update({
+                            blocked: response
+                        });
+                    }
+                }, "text");
+            }
+            if (type == 'detail') {
+                loadData('/admin/member/detail?id='+id,'#data-list');
+
+            }
+
+
+        })
+
+    });
+
+</script>

@@ -1,0 +1,163 @@
+<ul class="layui-tab-title site-demo-title">
+    <li class="layui-this">用户信息</li>
+    <li>添加用户</li>
+    <li>登录日志</li>
+</ul>
+<div class="layui-body layui-tab-content site-demo site-demo-body">
+    <div class="layui-tab-item layui-show">
+        <div class="layui-main" id="data-list">
+
+            <table class="layui-table" lay-filter="admin" id="data-lists">
+
+                <thead>
+                <!--<tr>-->
+                <!--<th>用户</th>-->
+                <!--<th class="tb-row-auto-hide">姓名</th>-->
+                <!--<th class="tb-row-auto-hide">等级</th>-->
+                <!--<th>操作</th>-->
+                <!--</tr>-->
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+    <div class="layui-tab-item">
+        <div class="layui-main">
+            <form class="layui-form layui-form-pane ajax-form add-user" action="/admin/user/add">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="username" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">姓&emsp;名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="real_name" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">密&emsp;码</label>
+                    <div class="layui-input-block">
+                        <input type="password" name="password" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item" pane="">
+                    <label class="layui-form-label">权&emsp;限</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="level" value="0" title="超级管理员" checked="">
+                        <input type="radio" name="level" value="1" title="普通管理员">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" onclick="return submitForm('script','.add-user')">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="layui-tab-item">
+        <div class="layui-main">
+            <table class="layui-table">
+                <colgroup>
+                    <col width="200">
+                    <col width="200">
+                    <col width="200">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>用户</th>
+                    <th>登录时间</th>
+                    <th class="tb-row-auto-hide">登录IP</th>
+                    <th>状态</th>
+                </tr>
+                </thead>
+                <tbody id="log-data">
+
+                </tbody>
+            </table>
+            <div id="demo1"></div>
+        </div>
+
+    </div>
+
+</div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-mini" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+
+    <!-- 这里同样支持 laytpl 语法，如： -->
+    {{#  if(d.auth > 2){ }}
+    <a class="layui-btn layui-btn-mini" lay-event="check">审核</a>
+    {{#  } }}
+</script>
+<script>
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+        //全选
+        /*form.on('checkbox(allChoose)', function (data) {
+         var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
+         child.each(function (index, item) {
+         item.checked = data.elem.checked;
+         });
+         form.render('checkbox');
+         });*/
+    });
+    layui.use('table', function () {
+        var table = layui.table;
+
+        table.render({
+            url: '/admin/user/view',
+            elem: '#data-lists',
+            cols: [[
+
+                {checkbox: true},
+                {field: 'id', title: 'ID', width: 80,sort:true},
+                {field: 'username', title: '用户名', width: 100},
+                {field: 'real_name', title: '姓名', width: 100},
+                {field: 'level', title: '类型', width: 120},
+                {field: 'login_ip', title: '最后登陆ip', width: 120},
+                {field: 'login_time', title: '最后登陆时间', width: 160},
+                {fixed: 'right', title:'操作',width:200, align:'center', toolbar: '#barDemo'}
+            ]]
+        });
+
+
+        table.on('tool(admin)', function(obj) {
+            var id = obj.data.id;
+            var level = "{$info->group}";
+            var uid = "{$info->id}";
+            if (level !='超级管理员'){
+                if (uid !=id){
+                    return showMessage('您没有权限执行此操作',2);
+                }
+            }
+            if (obj.event == 'edit'){
+                loadData('/admin/user/edit?id='+id);
+
+            }
+            if (obj.event =='del'){
+
+                delSingle('/admin/user/delete',id);
+            }
+
+
+
+        });
+    });
+
+
+    //    $(function () {
+    //
+    //        loadData('/admin/user/view','#data-list')
+    //    })
+
+</script>

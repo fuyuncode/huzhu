@@ -1,0 +1,88 @@
+<ul class="layui-tab-title site-demo-title">
+    <li class="layui-this">配置列表</li>
+    <li>添加规则</li>
+</ul>
+<div class="layui-body layui-tab-content site-demo site-demo-body">
+    <div class="layui-tab-item layui-show">
+        <div class="layui-main">
+            <table class="layui-table" lay-filter="config" id="config-list">
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="layui-tab-item">
+        <div class="layui-main">
+            <form class="layui-form layui-form-pane ajax-form add-config" action="/admin/config/add">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">配置名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="cfg_name" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">值</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="cfg_val" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">如需设置多个值请以逗号分割。例：1,2,3</div>
+
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">单位</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="per" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">例：%,元,人</div>
+
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" onclick="return submitForm('script','.add-config')">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+
+
+        </div>
+
+    </div>
+</div>
+<script>
+
+    layui.use('table', function () {
+        var table = layui.table;
+        table.render({
+            elem: '#config-list',
+            page: false,
+            url: '/admin/config/view',
+            request: {},
+            cols: [
+                [{field: 'id', title: 'ID', width: 80, sort: true},
+                    {field: 'cfg_name', title: '配置名', width: 200, edit: 'text'},
+                    {field: 'cfg_val', title: '值', width: 200, edit: 'text'},
+                    {field: 'per', title: '单位', width: 80, edit: 'text'},
+
+                ]
+            ]
+        });
+        table.on('edit(config)', function (obj) {
+                var url = "/admin/config";
+                var value = obj.value; //得到修改后的值
+                var title = obj.data.cfg_name,
+                        id = obj.data.id;
+                $.post(url, {'id': id, 'cfg_val': value}, function (response) {
+                    if (response == 'success')
+                        layer.msg(title + ' 更改为：' + value);
+                    else if (response == 'error')
+                        layer.msg('修改失败');
+                    else
+                        layer.msg(response);
+                }, "text");
+        });
+
+    })
+
+
+</script>

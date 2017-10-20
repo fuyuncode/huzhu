@@ -1,0 +1,81 @@
+<ul class="layui-tab-title site-demo-title">
+    <li class="layui-this">服务器信息</li>
+</ul>
+<div class="layui-body layui-tab-content site-demo site-demo-body">
+    <div class="layui-tab-item layui-show">
+        <div class="layui-main">
+            <div id="LAY_preview">
+                <form class="layui-form layui-form-pane" action="">
+                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                        <legend>系统信息</legend>
+                    </fieldset>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">系统类型</label>
+                        <div class="layui-input-inline">
+                            <input type="text" readonly value="{$os1}" autocomplete="off" class="layui-input">
+                        </div>
+                        <label class="layui-form-label">操作系统</label>
+                        <div class="layui-input-inline">
+                            <input type="text" readonly value="{$os2}" autocomplete="off" class="layui-input">
+                        </div>
+                        <label class="layui-form-label">系统用户</label>
+                        <div class="layui-input-inline">
+                            <input type="text" readonly value="{$user}" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                        <legend>运行环境</legend>
+                    </fieldset>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">PHP版本</label>
+                        <div class="layui-input-inline">
+                            <input type="text" readonly value="{$ver}" autocomplete="off" class="layui-input">
+                        </div>
+                        <label class="layui-form-label">Zend版本</label>
+                        <div class="layui-input-inline">
+                            <input type="text" readonly value="{$zend}" autocomplete="off" class="layui-input">
+                        </div>
+                        <label class="layui-form-label">解译引擎</label>
+                        <div class="layui-input-inline">
+                            <input type="text" readonly value="{$evv}" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+                        <legend>其他信息</legend>
+                    </fieldset>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">服务器IP</label>
+                        <div class="layui-input-inline">
+                            <input type="text" readonly value="{$ip}" autocomplete="off" class="layui-input">
+                        </div>
+                        <label class="layui-form-label">客户端IP</label>
+                        <div class="layui-input-inline">
+                            <input type="text" readonly value="{$cip}" autocomplete="off" class="layui-input">
+                        </div>
+                        <label class="layui-form-label">服务器时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" readonly value="{$time}" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--
+        <div class="layui-tab-item">
+            <div class="layui-main">
+
+                <div style="margin: 15px 0;">
+                    1111
+                </div>
+
+
+                <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+                    <legend>相关</legend>
+                </fieldset>
+                <a class="layui-btn layui-btn-normal" href="/doc/element/nav.html" target="_blank">导航元素文档</a>
+                <a class="layui-btn layui-btn-normal" href="/doc/modules/element.html" target="_blank">常用元素操作</a>
+            </div>
+        </div>-->
+</div>
